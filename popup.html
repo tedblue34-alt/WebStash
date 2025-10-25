@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WebStash</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body class="app-body">
+  <div id="app-container" class="app-container">
+    <div class="bg-gradient"></div>
+
+    <header class="header">
+      <h1 class="title">WebStash</h1>
+    </header>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button id="tab-save" class="tab active">Save Item</button>
+      <button id="tab-browse" class="tab">Browse</button>
+    </div>
+
+    <main class="main">
+      <!-- Save View -->
+      <section id="view-save" class="view">
+        <form id="add-item-form" class="card">
+          <input id="item-title" type="text" placeholder="Title (optional)" class="input" />
+          <textarea id="item-content" rows="3" required class="input"
+            placeholder="Enter a note or paste a URL (link, image, or video)"></textarea>
+
+          <div class="row">
+            <input id="item-tags" type="text" class="input"
+              placeholder="Add tags (e.g. #ai, #design, research, how-to)" />
+          </div>
+
+          <button type="submit" class="btn primary">Save</button>
+          <div id="save-status" class="status" aria-live="polite"></div>
+        </form>
+
+        <div class="subtle-note">
+          Tip: tags can be <code>#hashtag</code> or comma-separated — they’re normalized automatically.
+        </div>
+      </section>
+
+      <!-- Browse View -->
+      <section id="view-browse" class="view hidden">
+        <!-- Controls Row -->
+        <div class="card controls">
+          <input id="search-input" class="input" type="text" placeholder="Search text or #tag…" />
+          <div class="row wrap">
+            <label class="label">Order:</label>
+            <select id="order-select" class="select">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="title">Title A→Z</option>
+            </select>
+
+            <button id="clear-filters" class="btn">Clear</button>
+            <button id="export-json" class="btn">Export JSON</button>
+
+            <!-- NEW: Chat trigger -->
+            <button id="toggle-chat" class="btn primary">Chat with WebStash</button>
+          </div>
+        </div>
+
+        <!-- Inline Chat Panel (hidden by default) -->
+        <div id="chat-panel" class="card hidden">
+          <div class="row wrap" style="gap:10px; align-items: flex-start;">
+            <div class="chat-col">
+              <label class="label">Prompt</label>
+              <textarea id="input-prompt" class="input" rows="2"
+                placeholder='Ask about the items shown below (e.g., "What is my favorite hashtag?")'></textarea>
+            </div>
+
+            <div class="chat-col slim">
+              <label class="label">Temperature</label>
+              <input id="temperature" type="range" min="0" max="1" step="0.1" value="0.3" />
+              <div class="small">Value: <span id="label-temperature">0.3</span></div>
+
+              <label class="label">Top-K</label>
+              <input id="top-k" type="range" min="1" max="10" step="1" value="3" />
+              <div class="small">Value: <span id="label-top-k">3</span></div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:8px;">
+            <button id="button-prompt" class="btn primary" disabled>Ask</button>
+            <button id="button-reset" class="btn" disabled>Reset</button>
+          </div>
+
+          <div id="loading" class="muted hidden">Thinking…</div>
+          <div id="error" class="error hidden"></div>
+
+          <div id="response" class="response hidden" role="region" aria-live="polite">
+            <!-- We'll render plain text for safety -->
+            <div id="response-body"></div>
+          </div>
+        </div>
+
+        <!-- Waterfall Results -->
+        <div id="results" class="results">
+          <!-- Sections injected here -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
